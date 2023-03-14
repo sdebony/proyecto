@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Listado de Alquileres</title>
+
+    <style type="text/css">
+    @page {
+        size: letter;
+        margin: 1cm;
+    }
+    .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 5px;
+        background-color: #fff;
+    }
+    .table th,
+    .table td {
+        padding: 5px;
+        vertical-align: top;
+        border-top: 1px solid #000;
+        text-align: center;
+    }
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #000;
+    }
+    .table tbody + tbody {
+        border-top: 2px solid #000;
+    }
+    .table .table {
+        background-color: #fff;
+    }
+    .list-group {
+        display: block;
+        width: 100%;
+        list-style: none;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .list-group p {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        list-style: none;
+        font-size: 1.1em;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h4></h4>
+                <h3 align="center">{{ titulo }}</h3>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Cliente</th>
+                        <th>Fecha Entrega</th>
+                        <th>Fecha Retiro</th>
+                        <th>Código</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in alq %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.cliente }}</td>
+                        <td>{{ item.fecha_entrega | date:"d/m/Y" }}</td>
+                        <td>{{ item.fecha_retiro | date:"d/m/Y" }}</td>
+                        <td>{{ item.codigo }} </td>
+                        <td>{{ item.descripcion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+
+function calculardias(f1,f2) 
+{
+  m1 = new Date("2010-01-01");
+  m2 = new Date("2010-01-20");
+  r1 = f1.getTime()
+  r2 = f2.getTime()
+  r = r2-r1;
+  r = r/(60*60*24*1000)
+  document.getElementById("dias").innerHTML = r;
+}   
+</script>

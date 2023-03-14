@@ -1,0 +1,316 @@
+{% extends 'base/base.html'%}
+{% block page_content %}
+<form method="post" id="frmLiquidacion">
+    {% csrf_token %}
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="content">
+                <!-- Sección Superior -->
+                <div class="row ">
+                    <div class="col">
+                        <div class="col-lg-8">Fecha Liquidación:</div>
+                        <div class="col-lg-8">
+                            <script type="text/javascript">
+                                function validar(obj) {
+                                    patron = /^\d{4}-\d{2}-\d{2}$/
+                                    if (patron.test(obj.value)==false)
+                                        {
+                                        alert("Forma de fecha incorrecta. yyyy-mm-dd")
+                                        fecha.value = ""
+                                        fecha.focus
+                                        }
+                                
+                                    }
+                            </script>
+                            <input type="text"  onblur="validar(this)" name="fecha" id="fecha" class="form-control" 
+                            value="{{  liqEnc.fecha|date:'Y-m-d'  }}"/>
+                        </div>
+                    </div>
+
+                    
+                    <div class="col">
+                        <div class="col-lg-8">Mes:</div>
+                        <div class="col-lg-8">
+                            <input type="text" name="mes" id="mes" class="form-control" 
+                            value="{{ liqEnc.mes }}" />
+                        </div>
+                    </div>
+
+              
+                    <div class="col">
+                        <div class="col-lg-8">Fecha Desde:</div>
+                        <div class="col-lg-8">
+                            <script type="text/javascript">
+                                function validar(obj) {
+                                  patron = /^\d{4}-\d{2}-\d{2}$/
+                                  if (patron.test(obj.value)==false)
+                                    {
+                                    alert("Forma de fecha incorrecta. yyyy-mm-dd")
+                                    fecha_entrega.value = ""
+                                    fecha_entrega.focus
+                                    }
+                                    }
+                            </script>
+                            <input type="text"  onblur="validar(this)" name="fecha_desde" id="fecha_desde" class="form-control" 
+                            value="{{ liqEnc.fecha_desde|date:'Y-m-d' }}" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="col-lg-8">Fecha Hasta:</div>
+                        <div class="col-lg-8">
+                            <script type="text/javascript">
+                                function validar(obj) {
+                                  patron = /^\d{4}-\d{2}-\d{2}$/
+                                  if (patron.test(obj.value)==false)
+                                    {
+                                    alert("Forma de fecha incorrecta. yyyy-mm-dd")
+                                    fecha_entrega.value = ""
+                                    fecha_entrega.focus
+                                    }
+                                    }
+                            </script>
+                            <input type="text"  onblur="validar(this)" name="fecha_hasta" id="fecha_hasta" class="form-control" 
+                            value="{{ liqEnc.fecha_hasta|date:'Y-m-d' }}"/>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="col-lg-8">Estado:</div>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control text-left" value="{{ liqEnc.confirmada }}" 
+                                name="confirmada" id="confirmada">
+                        </div>
+                    </div>
+                </div> <!-- Fin ROW 1-->
+                 <hr>
+
+                <!-- Botones -->
+                <div class="dropdown-divider"></div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Generar</button>
+                        <a href="{% url 'fac:liquidacion_list' %}" class="btn btn-success"><i class="far fa-hand-point-left"></i> Cancelar</a>
+                    </div>
+                </div>
+                <!-- Fin Botones -->
+                <!-- Inicio Detalle -->
+                
+                {% if liqDet %}
+                    <table class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                    <thead>
+                        <th data-sortable="true" data-field="id">Id</th> 
+                        <th data-sortable="true" data-field="id">Fecha Desde</th> 
+                        <th data-sortable="true" data-field="codigo">Fecha Hasta</th>
+                        <th data-sortable="true" data-field="codigo">Dias</th>
+                        <th data-sortable="true" data-field="codigo">Cliente</th>
+                        <th data-sortable="true" data-field="codigo">Código Tubo</th>
+                    </thead>
+                    <tbody>
+                        {% for item in liqDet %}
+                        <tr>
+                        <td>{{ item.idalq }}</td>
+                        <td>{{ item.fecha_desde }}</td>
+                        <td>{{ item.fecha_hasta }}</td>
+                        <td>{{ item.dias }}</td>
+                        <td>{{ item.cliente }}</td>
+                        <td>{{ item.codigo_tubo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                    <table class="table table-striped table-hover dt-responsive nowrap" style="width:100%">
+                    <thead>
+                        <th data-sortable="true" data-field="id">Id</th> 
+                        <th data-sortable="true" data-field="id">Fecha Enterga</th> 
+                        <th data-sortable="true" data-field="codigo">Fecha Retiro</th>
+                        <th data-sortable="true" data-field="codigo">Dias</th>
+                        <th data-sortable="true" data-field="codigo">Cliente</th>
+                        <th data-sortable="true" data-field="codigo">Código Tubo</th>
+                    </thead>
+                    <tbody>
+                        {% for item in alq %}
+                        <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.fecha_entrega }}</td>
+                        <td>{{ item.fecha_retiro }}</td>
+                        <td >{{ item.fecha_entrega }} - {{ item.fecha_retiro }}</div></td>
+                        <td>{{ item.cliente }}</td>
+                        <td>{{ item.codigo }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                {%endif %}
+            
+                <!-- Fin Detalle -->
+             
+            </div>  <!--FIN <class="content">-->
+        </div>
+     </div>
+</form>
+
+
+{% endblock %}
+
+{% block js_page %}
+
+
+<script>
+
+    $("frmLiquidacion").submit(function(e){
+        var cliente = +$("#cliente").val();
+        var idpedido = +$("#idpedido").val();
+
+        alert("frmAlquiler - ")
+        
+        if(idpedido<1){
+            mensaje("No hay pedidos");
+            return false;
+        }
+   })
+    
+   $(function () {
+
+        $("#id_fecha_entrega, #id_fecha_entrega").datetimepicker({
+            format: 'Y-m-d',
+            timepicker:false
+        });
+
+        $("#id_fecha_retiro, #id_fecha_retiro").datetimepicker({
+            format: 'Y-m-d',
+            timepicker:false
+        });
+
+        $("#enc_cliente").val({{ alq.cli.id }}).change();
+
+        $('#enc_cliente').select2({
+            placeholder: "Seleccione Cliente",
+            allowClear: true
+        });
+
+        $("#enc_cliente").data('select2').trigger('select', {
+            data: {"id":alq.cli.id  }
+        });
+
+
+        $("#idpedido").keypress(function(e){
+        if(e.keyCode==13){
+            e.preventDefault();
+            buscarpedido();
+            }
+        });
+
+        $("#codigo").keypress(function(e){
+        if(e.keyCode==13){
+            e.preventDefault();
+            buscartubo();
+            }
+        });
+
+    });
+
+
+    function buscarpedido()
+    {
+        if ($("#idpedido").val()=="0" || $("#idpedido").val()==null){
+            mensaje("Pedido No Seleccionado",'red');
+            return false;
+        }
+        var codigo = "0"
+        var codigo = $("#idpedido").val();
+        if(codigo=="" || codigo=="0" || codigo=="undefined"){
+            return false;
+        }
+
+        var path = "{% url 'api:pedido_list' %}" + codigo; 
+        alert(path);
+        $.ajax({
+            type:"GET",
+            url: path,
+            success: function(r){
+                
+                if(r.id<=0 || !r.estado){
+                    mensaje("No se encontró el pedido",'orange')
+                    $("#idpedido").val("");
+                    $("#cliente").val("");
+                    return false;
+                }
+   
+                $("#cliente").val(r.cliente);
+                $("#enc_cliente").val(r.cliente);
+                $("#fecha_entrega").val(r.fecha_entrega);
+                $("#fecha").val(r.fecha);
+                
+            },
+            error: function(a,b,c){
+                console.log(a);
+                if(a.status==404){
+                    mensaje("Pedido " + codigo + "- No Encontrado o No Existe",'red');
+                    $("#idpedido").val("");
+                    $("#cliente").val("");
+                  
+                }
+
+            }
+
+        });
+
+    };
+
+    function buscartubo()
+    {
+        if ($("#codigo").val()=="0" || $("#codigo").val()==null){
+            mensaje("Tubo No Seleccionado",'red');
+            return false;
+        }
+        var codigo = ""
+        var codigo = $("#codigo").val();
+        if(codigo=="" || codigo=="0" || codigo=="undefined"){
+            return false;
+        }
+
+        var path = "{% url 'api:tubos_list' %}" + codigo; 
+        
+        $.ajax({
+            type:"GET",
+            url: path,
+            success: function(r){
+                
+                if(r.id<=0 || !r.estado){
+                    mensaje("No se encontró el tubo",'orange')
+                    $("#codigo").val("");
+                    $("#descripcion").val("");
+                    $("#codigo_barra").val("");
+                    $("#fecha_venc").val("");
+                    return false;
+                }
+   
+                $("#codigo").val(r.codigo);
+                $("#descripcion").val(r.descripcion);
+                $("#codigo_barra").val(r.codigo_barra);
+                $("#fecha_venc").val(r.fecha_venc);
+                
+            },
+            error: function(a,b,c){
+                console.log(a);
+                if(a.status==404){
+                    mensaje("Tubo " + codigo + "- No Encontrado o No Existe",'red');
+                    $("#codigo").val("");
+                    $("#descripcion").val("");
+                    $("#codigo_barra").val("");
+                    $("#fecha_venc").val("");
+                  
+                }
+
+            }
+
+        });
+
+    };
+ 
+
+
+</script>
+
+{% endblock %}

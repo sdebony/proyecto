@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impresión Remitos</title>
+</head>
+<body onload="window.print()"> <!-- ;window.close()-->
+    <!-- ENCABEZADO --> 
+    <table style="height: 184px; width: 900px; margin-left: auto; margin-right: auto;" border="0">
+      <tbody>
+      <tr>
+      <td style="width: 63px;" rowspan="6">&nbsp;</td>
+      <td style="width: 180px;">
+      <h1><strong>TEGSA</strong></h1>
+      </td>
+      <td style="width: 92px;">&nbsp;</td>
+      <td style="width: 96.9375px;">
+      <h1 style="text-align: center;">R</h1>
+      </td>
+      <td style="width: 99.0625px;">&nbsp;</td>
+      <td style="width: 197px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 272px;" colspan="2">Tom&aacute;s E Gargano</td>
+      <td style="width: 96.9375px;">Documento</td>
+      <td style="width: 99.0625px; text-align: right;">Remito:</td>
+      <td style="width: 197px;">{{datos.nro_remito}}</td>
+      </tr>
+      <tr>
+      <td style="width: 272px;" colspan="2">Direcci&oacute;n</td>
+      <td style="width: 96.9375px;">no valido como&nbsp;</td>
+      <td style="width: 99.0625px; text-align: right;">Fecha:</td>
+      <td style="width: 197px;">
+        <div>
+          <script>
+          date = new Date().toLocaleDateString();
+          document.write(date);
+          </script>
+          </div>
+        </td>
+      </tr>
+      <tr>
+      <td style="width: 272px;" colspan="2">Localidad</td>
+      <td style="width: 96.9375px;">factura</td>
+      <td style="width: 99.0625px; text-align: right;">CUIT:</td>
+      <td style="width: 197px;">30-000000001-1</td>
+      </tr>
+      <tr>
+      <td style="width: 272px;" colspan="2">Responsable Inscripto</td>
+      <td style="width: 96.9375px;">&nbsp;</td>
+      <td style="width: 99.0625px; text-align: right;">IIBB:</td>
+      <td style="width: 197px;">3-00000000-0</td>
+      </tr>
+      <tr>
+      <td style="width: 272px;" colspan="2">&nbsp;</td>
+      <td style="width: 96.9375px;">&nbsp;</td>
+      <td style="width: 296.062px;  text-align: center;" colspan="2">Inicio actividades Mayo 2018</td>
+      </tr>
+      </tbody>
+      </table>
+      <p>&nbsp;</p>
+      
+      <table style="height: 184px; width: 900px; margin-left: auto; margin-right: auto;" border="1">
+      <tbody>
+      <tr>
+      <td style="width: 891px;">
+      <table style="height: 166px; width: 887px; margin-left: auto; margin-right: auto;" border="0">
+      <tbody>
+      <tr>
+      <td style="width: 83.4531px;"><strong>Cliente:&nbsp;</strong></td>
+      <td style="width: 364.594px;">&nbsp;({{enc.cliente.id}})&nbsp;- {{enc.cliente}}</td>
+      <td style="width: 108.172px;"><strong>Fecha Entrega</strong></td>
+      <td style="width: 223.297px;">{{ enc.fecha_entrega|date:'Y-m-d' }}</td>
+      <td style="width: 73.4844px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 83.4531px;"><strong>&nbsp;Domicilio:</strong></td>
+      <td style="width: 364.594px;">{{cli.direccion1}}</td>
+      <td style="width: 108.172px;"><strong>&nbsp;N&deg; Pedido</strong></td>
+      <td style="width: 223.297px;"> {{datos.nro_pedido}}  </td>
+      <td style="width: 73.4844px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 83.4531px;">&nbsp;</td>
+      <td style="width: 364.594px;">{{ cli.direccion2 }}</td>
+      <td style="width: 108.172px;"><strong>&nbsp;N&deg; Compra</strong></td>
+      <td style="width: 223.297px;">{{datos.nro_orden}}</td>
+      <td style="width: 73.4844px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 83.4531px;">&nbsp;</td>
+      <td style="width: 364.594px;">{{ cli.direccion3 }}</td>
+      <td style="width: 108.172px;">&nbsp;<strong>N&deg; Factura</strong></td>
+      <td style="width: 223.297px;">{{datos.nro_factura}}</td>
+      <td style="width: 73.4844px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 83.4531px;"><strong>&nbsp;IVA:</strong></td>
+      <td style="width: 364.594px;">{{ cli.tipo_iva }}</td>
+      <td style="width: 108.172px;"><strong>&nbsp;C.U.I.T.</strong>:</td>
+      <td style="width: 223.297px;">{{ cli.cuit}}</td>
+      <td style="width: 73.4844px;">&nbsp;</td>
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      <tbody>
+      <tr>
+      <td style="width: 891px;">
+        <p>&nbsp;</p>
+        
+        <table style="width: 891px; margin-left: auto; margin-right: auto;" border="1">
+      <tbody>
+      <tr>
+      <td style="text-align: center; width: 881px;" colspan="5"><strong>TUBOS LLENOS ENTREGADOS</strong></td>
+      </tr>
+      <tr>
+      <td style="width: 121.047px;">Cantidad</td>
+      <td style="width: 115.969px;">C&oacute;digo</td>
+      <td style="width: 383.641px;">Descripci&oacute;n</td>
+      <td style="width: 114.797px;">C&oacute;digo Tubo</td>
+<!--      <td style="width: 121.547px;">Fecha Venc Tubo</td>
+-->      </tr>
+     
+      {% for item in det %}
+      <tr>
+       
+          <td>{{ item.cantidad }}</td>
+          <td>{{ item.codigo }}</td>
+          <td>{{ item.descripcion }}</td>
+          <td>{{ item.codigo_envase }}</td>
+<!--         <td>{{ item.fecha_venc }}</td>
+-->            
+      </tr>
+      {% endfor %}
+
+      
+      <tr>
+      <td style="width: 121.047px;">&nbsp;</td>
+      <td style="width: 115.969px;">&nbsp;</td>
+      <td style="width: 383.641px;">&nbsp;</td>
+      <td style="width: 114.797px;">&nbsp;</td>
+      </tr>
+      </tbody>
+      </table>
+      <table style="width: 891px; margin-left: auto; margin-right: auto; "border="2">
+      <tbody>
+      <tr>
+        
+        <td style="text-align: center; width: 881px;" colspan="5"><strong>TUBOS VACIOS RECIBIDOS</strong></td>
+      </tr>
+      <tr>
+      <td style="width: 121.062px;">Cantidad</td>
+      <td style="width: 115.984px;">C&oacute;digo</td>
+      <td style="width: 383.625px;">Descripci&oacute;n</td>
+      <td style="width: 114.812px;">C&oacute;digo Tubo</td>
+      </tr>
+      <tr>
+      <td style="width: 121.062px;">&nbsp;</td>
+      <td style="width: 115.984px;">&nbsp;</td>
+      <td style="width: 383.625px;">&nbsp;</td>
+      <td style="width: 114.812px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121.062px;">&nbsp;</td>
+      <td style="width: 115.984px;">&nbsp;</td>
+      <td style="width: 383.625px;">&nbsp;</td>
+      <td style="width: 114.812px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121.062px;">&nbsp;</td>
+      <td style="width: 115.984px;">&nbsp;</td>
+      <td style="width: 383.625px;">&nbsp;</td>
+      <td style="width: 114.812px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121.062px;">&nbsp;</td>
+      <td style="width: 115.984px;">&nbsp;</td>
+      <td style="width: 383.625px;">&nbsp;</td>
+      <td style="width: 114.812px;">&nbsp;</td>
+      </tr>
+      </tbody>
+      </table>
+      <table style="width: 891px;">
+      <tbody>
+      <tr>
+      <td style="text-align: center; width: 854px;" colspan="5">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 854px;" colspan="5">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 854px;" colspan="5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121px;">&nbsp;</td>
+      <td style="width: 115px;">&nbsp;Firma Conforme:</td>
+      <td style="width: 216.656px;" colspan="2">&nbsp;&nbsp;</td>
+      <td style="width: 121px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121px;">&nbsp;</td>
+      <td style="width: 115px;">&nbsp;Aclaraci&oacute;n:</td>
+      <td style="width: 216.656px;" colspan="2">&nbsp;&nbsp;</td>
+      <td style="width: 121px;">&nbsp;</td>
+      </tr>
+      <tr>
+      <td style="width: 121px;">&nbsp;</td>
+      <td style="width: 115px;">&nbsp;</td>
+      <td style="width: 216.656px;">&nbsp;</td>
+      <td style="width: 401.344px;" colspan="2"><strong>C.A.I.: 48133192483119 Vto: 30/03/2024 &nbsp;</strong></td>
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+
+
+</body>
+<script type="text/javascript">
+  function ponerCeros(num) {
+    while (num.value.length<5)
+      num.value = '0'+num.value;
+  }
+  </script>
+
+</html>

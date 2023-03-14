@@ -1,0 +1,107 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Listado de Liquidaciones</h6>
+    <div class="dropdown no-arrow">
+      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+        <div class="dropdown-header">Acciones:</div>
+        <a class="dropdown-item" href="{% url 'fac:liquidacion_new'  %}"><i class="far fa-calendar-plus"></i> Nueva</a>
+      </div>
+    </div>
+  </div>
+  <!-- Card Body -->
+  <div class="card-body">
+    {% if not obj %}
+    <div class="alert alert-info">No Hay Liquidaciones</div>
+    {% endif %}
+    <div class="buttons-toolbar">
+        <a class="dropdown-item" href="{% url 'fac:liquidacion_new'  %}"><i class="far fa-calendar-plus"></i> Nueva</a>
+    </div>
+
+
+    <table 
+      id="table"
+      data-toggle="table"
+      data-pagination="true"
+      data-search="true"
+      data-show-columns="true"
+      data-show-toggle="true"
+      data-show-fullscreen="true"
+      data-toolbar=".buttons-toolbar"
+      data-locale="es-NI"
+    >
+      <thead>
+          <th data-sortable="true" data-field="id">Id</th>        
+          <th data-sortable="true" data-field="fecha">Fecha</th>
+          <th data-sortable="true" data-field="mes">Mes Liquidación</th>
+          <th data-sortable="true" data-field="desde">Fecha Desde</th>
+          <th data-sortable="true" data-field="hasta">Fecha Hasta</th>
+          <th data-field="estado">Cobrado</th>
+          <th class="all">Acciones</th>  
+      </thead>
+      <tbody>
+        {% for item in obj%}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.fecha }}</td>
+          <td>{{ item.mes }}</td>
+          <td>{{ item.fecha_desde }} </td>
+          <td>{{ item.fecha_hasta}}</td>
+          <td>{{ item.realizada }}</td>
+          <td >         
+              <a href="{% url 'fac:liquidacion_edit' item.id  %}" class="href btn btn-warning btn-circle" title="Editar"><i class="far fa-edit"> </i></a>
+              <a href="{% url 'fac:liquidacion_del' item.id  %}" class="href btn btn-danger btn-circle" title="Eliminar"><i class="far fa-trash-alt"></i></a>
+            </div>
+         
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+</div>
+{% endblock %}
+{% block js_page %}
+<script>
+  function inactivar(id)
+  {
+    var data = {id:id};
+    data = JSON.stringify(data);
+    var token = '{{csrf_token}}';
+    // alert(token);
+    // alert(id);
+    
+    $.ajax({
+      headers : {"X-CSRFToken": token},
+      type:"POST",
+      url:"/fac/clientes/estado/"+id,
+      data: data,
+      success: function(response){
+        if(response==="OK")
+        {
+          location.reload(true);
+        }
+        else{
+          mensaje("Error Intentado Cambiar Estado a Cliente");
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrow){
+        console.log(textStatus, errorThrow);
+        mensaje(errorThrow,'red');
+        cerrar_modal();
+      }
+    });
+  }
+// Call the dataTables jQuery plugin
+// $(document).ready(function() {
+//   $('.table').DataTable();
+// });
+</script>
+{% endblock %}

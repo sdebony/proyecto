@@ -1,0 +1,179 @@
+{% extends 'base/base.html' %}
+
+{% block page_content %}
+<div class="card shadow mb-4">
+  <!-- Card Header - Dropdown -->
+  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <h6 class="m-0 font-weight-bold text-primary">Listado de Pedidos</h6>
+ 
+  </div>
+  <!-- Card Body -->
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">Fecha Desde:
+        <input type="text" class="form-class" name="f1" id="f1" readonly>
+      </div>
+      <div class="col-md-4">Fecha Hasta:
+        <input type="text" class="form-class" name="f2" id="f2" readonly>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-warning" type="button" id="btnPrint">Imprimir</button>
+      </div>
+    </div>
+    <hr>
+
+    
+    {% if not obj %}
+    <div class="alert alert-info">No Hay Pedidos</div>
+    {% endif %}
+    <div class="buttons-toolbar">
+        <a class="btn btn-success" href="{% url 'fac:factura_new' %}"><i cass="far fa-calendar-plus"></i> Nuevo</a>
+    </div>
+
+    <table 
+      id="table"
+      data-toggle="table"
+      data-pagination="true"
+      data-search="true"
+      data-show-columns="true"
+      data-show-toggle="true"
+      data-show-fullscreen="true"
+      data-toolbar=".buttons-toolbar"
+      data-locale="es-NI"
+    >
+    <thead>
+      <th data-sortable="true" data-field="id">No.</th>        
+      <th data-sortable="true" data-field="fecha">Fecha</th>
+      <th data-sortable="true" data-field="nombres">Cliente</th>
+      <th data-sortable="true" data-field="total">Total</th>
+      <th data-sortable="true" data-field="entrega">Fecha Entrega Prometida</th>
+      <th data-field="estado">Estado</th>
+      <th data-field="estado_factura">Estado Pedido</th>
+      <th class="all">Acciones</th>
+    </thead>
+    <tbody>
+      {% for item in obj%}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.fecha }}</td>
+        <td>{{ item.cliente }}</td>
+        <td>{{ item.total }}</td>
+        <td>{{ item.fecha_entrega }}</td>
+        <td>{{item.estado|yesno:"Activo,Inactivo"}}</td>
+        <td>{{item.estado_factura}}</td>
+        <td>
+          <a href="{% url 'fac:factura_edit' item.id %}" class="href btn btn-warning btn-circle" title="Editar"><i class="far fa-edit"></i></a>
+          <a href="{% url 'fac:imprimir_remito' item.id %}" class="href btn btn-info btn-circle" title="Imprimir Remito" target="_remito"><i class="fas fa-truck"></i></a>
+          <button type="button" class="btn btn-success btn-circle" title="Cobrar factura" onclick="pagar_factura( {{ item.id  }})">
+            <i class="fas fa-hand-holding-usd"></i>
+          </button>
+          <button type="button" class="btn btn-success btn-circle" title="Generar factura electrónica" onclick="pagar_factura( {{ item.id  }})">
+            <i class="fas fa-receipt"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+{% block js_page %}
+<script>
+$(function(){
+  $("#f1, #f2").datetimepicker({
+      format: 'Y-m-d',
+      timepicker:false
+  });
+
+  $("#btnPrint").click(function(e){
+    e.preventDefault();
+    var f1,f2;
+    f1 = $("#f1").val();
+    f2 = $("#f2").val();
+    if(f1=="" || f1==null){
+      f1="2019-06-01";
+    }
+    if(f2=="" || f2==null){
+      var d = new Date();
+      var f2 = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+    }
+    
+    var url = "imprimir-todas/" + f1 + "/" + f2;
+
+    window.open(url,'facturas');
+    
+  });
+});
+
+function pagar_factura(id)
+    {
+        // mensaje(id);
+        $.confirm({
+            theme:"modern",
+            icon:"fab fa-keycdn",
+            type:'green',
+            title: "Confirmación Requerida",
+            content: 'url:/fac/facturas/pagar-factura/' + id,
+            onContentReady: function () {
+                var self = this;
+                this.$content.find('#usuario').val('{{ user.username }}');
+                this.$content.find('#usuario').select();
+                this.$content.find('#usuario').focus();
+            },
+            buttons:{
+                borrar:{
+                    text:"Pagar",
+                    btnClass:"btn btn-danger",
+                    action: function(){
+                      var usuario = this.$content.find('input#usuario');
+	                    var pass = this.$content.find('input#password');
+
+                        if(!usuario.val().trim()){
+                            mensaje("Usuario es requerido",'red');
+                            return false;
+                        }
+
+                        if(!pass.val().trim()){
+                            // $.alert({
+                            //     title:"Error",
+                            //     content: "Contraseña es Requerida",
+                            //     type: 'red'
+                            // });
+                            mensaje("Contraseña es Requerida","green");
+                            return false;
+                        }
+
+                        var data = {"usuario":usuario.val(),"pass":pass.val()};
+	                      console.log(data);
+
+                        var token = '{{csrf_token}}';
+                        $.ajax({
+                            headers: { "X-CSRFToken": token },
+                            type:"POST",
+                            data:data,
+                            url: '/fac/facturas/pagar-factura/' + id,
+                            success: function(r){
+                                console.log(r);
+                                if(r==="ok"){
+                                    location.reload(true);
+                                }else{
+                                    mensaje(r,'red');
+                                }
+                            },
+                            error: function(a,b,c){
+                                mensaje(c);
+                            }
+                        });
+                    }
+                    },
+                cancelar: function(){}
+                }
+        });
+    } 
+
+</script>
+{% endblock %}
