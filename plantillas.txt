@@ -1,1 +1,2 @@
-https://startbootstrap.com/previews/sb-admin-2
+Hago el cambio desde la PC en la carpeta GitHubProyect
+
