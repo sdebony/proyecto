@@ -1,5 +1,1 @@
-Hago el cambio desde la PC en la carpeta GitHubProyect
-
-Ahora lo modifico desde la web de GitHub
-
-desde visual code hago el cambio pero sobre la carpeta de GitHubProyect ........
+Este es el codigo que se va a pasar al git para luego subir al server pythonanywhere
