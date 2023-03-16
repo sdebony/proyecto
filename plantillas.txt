@@ -1,1 +1,3 @@
 Este es el codigo que se va a pasar al git para luego subir al server pythonanywhere
+
+modificado el 15/03 22:30Hs desde ruta: Factura\GitHubProyect
