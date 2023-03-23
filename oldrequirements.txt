@@ -100,4 +100,4 @@ wrapt==1.11.1
 xhtml2pdf==0.2.9
 zeep==4.2.1
 zipp==3.14.0
-zopfli==0.2.2
+
